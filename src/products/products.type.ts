@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { TenantType } from 'src/tenant/entities/tenant.type';
 
 @ObjectType('Products')
 export class ProductsType {
@@ -9,7 +10,7 @@ export class ProductsType {
   productName: string;
 
   @Field()
-  productDescription:string
+  productDescription: string;
 
   @Field()
   buyingPrice: number;
@@ -22,4 +23,7 @@ export class ProductsType {
 
   @Field()
   updateDate: string;
+
+  @Field((type) => TenantType, { nullable: true })
+  tenants: string;
 }

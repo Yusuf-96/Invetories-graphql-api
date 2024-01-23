@@ -11,8 +11,15 @@ input CreateProductsInput {
   updatedDate: String!
 }
 
+input CreateTenantInput {
+  address: String!
+  createdAt: String!
+  tenantName: String!
+}
+
 type Mutation {
   createProduct(createProductsInput: CreateProductsInput!): Products!
+  createTenant(createTenantInput: CreateTenantInput!): Tenant!
   deleteProduct(productId: String!): String!
   updateProduct(productId: String!, updateProductInput: UpdateProductInput!): String!
 }
@@ -24,12 +31,21 @@ type Products {
   productId: ID!
   productName: String!
   sellingPrice: Float!
+  tenants: Tenant
   updateDate: String!
 }
 
 type Query {
   product(productId: String!): Products!
   products: [Products!]!
+  tenants: [Tenant!]!
+}
+
+type Tenant {
+  address: String!
+  createdAt: String!
+  tenantId: ID!
+  tenantName: String!
 }
 
 input UpdateProductInput {

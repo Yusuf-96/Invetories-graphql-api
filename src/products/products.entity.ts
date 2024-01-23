@@ -1,3 +1,4 @@
+import { TenantType } from 'src/tenant/entities/tenant.type';
 import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
 
 @Entity()
@@ -25,4 +26,7 @@ export class Product {
 
   @Column()
   updatedDate: string;
+
+  @Column((type) => TenantType)
+  tenants: TenantType;
 }
