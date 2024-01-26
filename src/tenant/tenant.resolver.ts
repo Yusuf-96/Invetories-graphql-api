@@ -2,6 +2,7 @@ import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { CreateTenantInput } from './dto/create-tenant.input';
 import { TenantType } from './entities/tenant.type';
 import { TenantService } from './tenant.service';
+import { UpdateTenantInput } from './dto/update-tenant.input';
 
 @Resolver(() => TenantType)
 export class TenantResolver {
@@ -19,17 +20,18 @@ export class TenantResolver {
     return this.tenantService.findAll();
   }
 
-  // @Query(() => Tenant, { name: 'tenant' })
-  // findOne(@Args('id', { type: () => Int }) id: number) {
-  //   return this.tenantsService.findOne(id);
-  // }
+  @Query(() => TenantType, { name: 'tenant' })
+  findOne(@Args('tenantId') tenantId: string) {
+    return this.tenantService.findOne(tenantId);
+  }
 
-  // @Mutation(() => Tenant)
-  // updateTenant(
-  //   @Args('updateTenantInput') updateTenantInput: UpdateTenantInput,
-  // ) {
-  //   return this.tenantsService.update(updateTenantInput.id, updateTenantInput);
-  // }
+  @Mutation(() => TenantType)
+  updateTenant(
+    @Args('tenantId') tenantId: string,
+    @Args('updateTenantInput') updateTenantInput: UpdateTenantInput,
+  ) {
+    return this.tenantService.update(tenantId, updateTenantInput);
+  }
 
   // @Mutation(() => Tenant)
   // removeTenant(@Args('id', { type: () => Int }) id: number) {

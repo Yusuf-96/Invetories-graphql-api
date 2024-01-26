@@ -22,6 +22,7 @@ type Mutation {
   createTenant(createTenantInput: CreateTenantInput!): Tenant!
   deleteProduct(productId: String!): String!
   updateProduct(productId: String!, updateProductInput: UpdateProductInput!): String!
+  updateTenant(tenantId: String!, updateTenantInput: UpdateTenantInput!): Tenant!
 }
 
 type Products {
@@ -38,6 +39,7 @@ type Products {
 type Query {
   product(productId: String!): Products!
   products: [Products!]!
+  tenant(tenantId: String!): Tenant!
   tenants: [Tenant!]!
 }
 
@@ -53,4 +55,10 @@ input UpdateProductInput {
   productDescription: String
   productName: String
   sellingPrice: Float
+}
+
+input UpdateTenantInput {
+  address: String!
+  createdAt: String
+  tenantName: String!
 }
