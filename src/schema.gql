@@ -8,6 +8,7 @@ input CreateProductsInput {
   productDescription: String!
   productName: String!
   sellingPrice: Float!
+  tenantId: ID!
   updatedDate: String!
 }
 

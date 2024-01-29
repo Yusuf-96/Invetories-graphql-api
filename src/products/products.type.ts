@@ -24,6 +24,6 @@ export class ProductsType {
   @Field()
   updateDate: string;
 
-  @Field((type) => TenantType, { nullable: true })
-  tenants: string;
+  @Field(() => TenantType, { nullable: true })
+  tenants: TenantType;
 }

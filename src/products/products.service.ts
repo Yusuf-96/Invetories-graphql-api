@@ -5,15 +5,17 @@ import { Repository } from 'typeorm';
 import { CreateProductsInput } from './products.input';
 import { v4 as uuid } from 'uuid';
 import { UpdateProductInput } from './dto/upated-product.input';
+import { Tenant } from 'src/tenant/entities/tenant.entity';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(Product) private productRespository: Repository<Product>,
+    @InjectRepository(Tenant) private tenantRepository: Repository<Tenant>,
   ) {}
 
   async getProducts(): Promise<Product[]> {
-    const products = this.productRespository.find();
+    const products = await this.productRespository.find();
 
     return products;
   }
@@ -30,24 +32,20 @@ export class ProductsService {
   async createProduct(
     createProductInput: CreateProductsInput,
   ): Promise<Product> {
-    const {
-      productName,
-      productDescription,
-      buyingPrice,
-      sellingPrice,
-      createdDate,
-      updatedDate,
-    } = createProductInput;
+    const { tenantId, ...productData } = createProductInput;
+
+    let tenant = await this.tenantRepository.findOneBy({ tenantId });
+
+    if (!tenant) {
+      throw new Error(`Tenant with ID ${tenantId} not found`);
+    }
 
     const product = this.productRespository.create({
+      ...productData,
       productId: uuid(),
-      productName,
-      productDescription,
-      buyingPrice,
-      sellingPrice,
-      createdDate,
-      updatedDate,
+      tenants: tenant,
     });
+    product.tenants = tenant;
 
     return this.productRespository.save(product);
   }

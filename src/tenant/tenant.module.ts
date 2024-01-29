@@ -7,5 +7,6 @@ import { Tenant } from './entities/tenant.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Tenant])],
   providers: [TenantResolver, TenantService],
+  exports: [TenantService],
 })
 export class TenantModule {}

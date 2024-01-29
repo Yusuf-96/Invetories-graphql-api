@@ -1,16 +1,38 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { ProductsType } from './products.type';
 import { ProductsService } from './products.service';
 import { CreateProductsInput } from './products.input';
 import { UpdateProductInput } from './dto/upated-product.input';
+import { TenantService } from 'src/tenant/tenant.service';
+import { TenantType } from 'src/tenant/entities/tenant.type';
 
 @Resolver((of) => ProductsType)
 export class ProductsResolver {
-  constructor(private productsService: ProductsService) {}
+  constructor(
+    private productsService: ProductsService,
+    private tenantService: TenantService,
+  ) {}
 
   @Query(() => [ProductsType])
-  products() {
-    return this.productsService.getProducts();
+  async products() {
+    const products = await this.productsService.getProducts();
+
+    const listProduct = products.map((product) => ({
+      product,
+      tenants: product?.tenants,
+    }));
+
+    console.log('first', listProduct);
+
+    return products;
+    // return products;
   }
 
   @Query(() => ProductsType)

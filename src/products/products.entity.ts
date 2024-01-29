@@ -27,6 +27,6 @@ export class Product {
   @Column()
   updatedDate: string;
 
-  @Column((type) => TenantType)
+  @Column(() => TenantType)
   tenants: TenantType;
 }
